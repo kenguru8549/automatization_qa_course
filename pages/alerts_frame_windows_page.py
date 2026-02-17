@@ -1,7 +1,7 @@
 import random
 import time
 
-from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators
+from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators
 from pages.base_page import BasePage
 
 
@@ -54,4 +54,23 @@ class AlertsPage(BasePage):
         text_result = self.element_is_present(self.locators.PROMPT_RESULT).text  #  текст, который появится на осн. странице, после нажатия кнопки на попапе
         return text, text_result  #  возвращаем написанный текст и текст после нажатия кнопки
 
+class FramesPage(BasePage):
+    locators = FramesPageLocators()
 
+    def check_frame(self, frame_num):  #  метод нахождения фреймов на странице
+        if frame_num == 'frame1':
+            frame = self.element_is_present(self.locators.FIRST_FRAME)
+            width = frame.get_attribute('width')  #  определяем ширину фрейма
+            height = frame.get_attribute('height')  #  определяем высоту фрейма
+            self.driver.switch_to.frame(frame)  #  переключаемся на сам фрейм через его локатор
+            text = self.element_is_present(self.locators.TITLE_FRAME).text  #  вытягиваем текст фрейма
+            self.driver.switch_to.default_content()  #  возвращаемся из фрейма на основную страницу
+            return [text, width, height]
+        if frame_num == 'frame2':
+            frame = self.element_is_present(self.locators.SECOND_FRAME)
+            width = frame.get_attribute('width')  #  определяем ширину фрейма
+            height = frame.get_attribute('height')  #  определяем высоту фрейма
+            self.driver.switch_to.frame(frame)  #  переключаемся на сам фрейм через его локатор
+            text = self.element_is_present(self.locators.TITLE_FRAME).text  #  вытягиваем текст фрейма
+            self.driver.switch_to.default_content()  # возвращаемся из фрейма на основную страницу
+            return [text, width, height]
