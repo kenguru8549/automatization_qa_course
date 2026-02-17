@@ -1,7 +1,8 @@
 import random
 import time
 
-from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators
+from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
+    NestedFramesPageLocators
 from pages.base_page import BasePage
 
 
@@ -74,3 +75,16 @@ class FramesPage(BasePage):
             text = self.element_is_present(self.locators.TITLE_FRAME).text  #  вытягиваем текст фрейма
             self.driver.switch_to.default_content()  # возвращаемся из фрейма на основную страницу
             return [text, width, height]
+
+class NestedFramesPage(BasePage):
+    locators = NestedFramesPageLocators()
+
+    def check_nested_frame(self):
+        parent_frame = self.element_is_present(self.locators.PARENT_FRAME)  #  находим родительский фрейм
+        self.driver.switch_to.frame(parent_frame)  #  переключаемся на фрейм
+        parent_text = self.element_is_present(self.locators.PARENT_TEXT).text  #  берем из фрейма текст
+        child_frame = self.element_is_present(self.locators.CHILD_FRAME)  #  находим детский фрейм
+        self.driver.switch_to.frame(child_frame)  #  переключаемся на фрейм
+        child_text = self.element_is_present(self.locators.CHILD_TEXT).text  #  берем из фрейма текст
+        return parent_text, child_text
+
