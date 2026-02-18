@@ -2,7 +2,7 @@ import random
 import time
 
 from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
-    NestedFramesPageLocators
+    NestedFramesPageLocators, ModalDialogPageLocators
 from pages.base_page import BasePage
 
 
@@ -79,7 +79,7 @@ class FramesPage(BasePage):
 class NestedFramesPage(BasePage):
     locators = NestedFramesPageLocators()
 
-    def check_nested_frame(self):
+    def check_nested_frame(self):  #  метод нахождения вложенных фреймов на странице
         parent_frame = self.element_is_present(self.locators.PARENT_FRAME)  #  находим родительский фрейм
         self.driver.switch_to.frame(parent_frame)  #  переключаемся на фрейм
         parent_text = self.element_is_present(self.locators.PARENT_TEXT).text  #  берем из фрейма текст
@@ -88,3 +88,15 @@ class NestedFramesPage(BasePage):
         child_text = self.element_is_present(self.locators.CHILD_TEXT).text  #  берем из фрейма текст
         return parent_text, child_text
 
+class ModalDialogPage(BasePage):
+    locators = ModalDialogPageLocators()
+
+    def check_modal_dialogs(self):  #  метод нахождения модального окна
+        self.element_is_visible(self.locators.SMALL_MODAL_BUTTON).click()  #  кликаем на кнопку открытия малого модального окна
+        title_small = self.element_is_visible(self.locators.TITLE_SMALL_MODAL).text  #  берем текст заголовка модального окна
+        body_small_text = self.element_is_visible(self.locators.BODY_SMALL_MODAL).text  # берем текст тела модального окна
+        self.element_is_visible(self.locators.SMALL_MODAL_CLOSE_BUTTON).click()  # кликаем на кнопку закрытия модального окна
+        self.element_is_visible(self.locators.LARGE_MODAL_BUTTON).click()  # кликаем на кнопку открытия большого модального окна
+        title_large = self.element_is_visible(self.locators.TITLE_LARGE_MODAL).text  # берем текст заголовка модального окна
+        body_large_text = self.element_is_visible(self.locators.BODY_LARGE_MODAL).text  # берем текст тела модального окна
+        return [title_small, len(body_small_text)], [title_large, len(body_large_text)]
