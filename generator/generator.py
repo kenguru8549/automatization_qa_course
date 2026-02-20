@@ -1,6 +1,6 @@
 import random
 
-from data.data import Person
+from data.data import Person, Color
 from faker import Faker #  библ содержит большое кол-во полей и данных для работы
 
 
@@ -26,4 +26,9 @@ def generated_file():
     file.write(f'hello{random.randint(0, 999)}')  #  заполняем файл
     file.close()  #  закрываем файл
     return file.name, path  #  возвращаем имя файла (метод) и путь
+
+def generated_color():
+    yield Color(
+        color_name=["Red", "Blue", "Green", "Yellow", "Black", "White"]
+    )
 

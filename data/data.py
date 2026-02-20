@@ -13,3 +13,8 @@ class Person:
     current_address: str = None  #  обязательно прописывать тип данных
     permanent_address: str = None  #  обязательно прописывать тип данных
     mobile: str = None
+
+
+@dataclass
+class Color:
+    color_name: list = None
