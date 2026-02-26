@@ -43,3 +43,9 @@ class BasePage:  #  создаем главный класс базовой ст
         action.context_click(element)  # делаем клик правой кнопкой мыши на элемент
         action.perform()  # команда для запуска двойного клика
 
+    def action_dgar_and_drop_by_offset(self, element, x_coords, y_coords):  #  метод перемещения по странице (делаем для слайдера)
+        action = ActionChains(self.driver)
+        action.drag_and_drop_by_offset(element, x_coords, y_coords)  #  зажмает точку на экране и двигает ее по координатам
+        action.perform()  #  запускаем перемещение точки по координатам
+
+

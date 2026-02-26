@@ -6,7 +6,8 @@ from selenium.webdriver import Keys
 from selenium.webdriver.support.select import Select
 
 from generator.generator import generated_color, generated_date
-from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators
+from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
+    ProgressBarPageLocators, SliderPageLocators
 from pages.base_page import BasePage
 
 
@@ -111,4 +112,25 @@ class DatePickerPage(BasePage):
                 item.click()
                 break
 
+class SliderPage(BasePage):
+    locators = SliderPageLocators()
+
+    def change_slider_value(self):  #  метод проверки слайдера
+        value_before = self.element_is_visible(self.locators.SLIDER_VALUE).get_attribute('value')  #  определяем значение слайдера до изменения
+        slider_input = self.element_is_visible(self.locators.INPUT_SLIDER)  #  нашли слайдер
+        self.action_dgar_and_drop_by_offset(slider_input, random.randint(1, 100), 0)  #  двигаем по оси икс в рандомном значении
+        value_after = self.element_is_visible(self.locators.SLIDER_VALUE).get_attribute('value')  # определяем значение слайдера после изменения
+        return value_before, value_after  #  возвращаем значение из поля
+
+class ProgressBarPage(BasePage):  #  метод проверки прогресс бара
+    locators = ProgressBarPageLocators()
+
+    def change_progress_bar_value(self):
+        value_before = self.element_is_present(self.locators.PROGRESS_BAR_VALUE).text  #  значение до изменения прог.бара
+        progress_bar_button = self.element_is_visible(self.locators.PROGRESS_BAR_BUTTON)  #  нашли кнопку
+        progress_bar_button.click()  #  первое нажатие на кнопку
+        time.sleep(random.randint(2, 5))  #  рандомная задержка по времени
+        progress_bar_button.click()  # повторное нажатие на кнопку
+        value_after = self.element_is_present(self.locators.PROGRESS_BAR_VALUE).text
+        return value_before, value_after
 
