@@ -7,7 +7,7 @@ from selenium.webdriver.support.select import Select
 
 from generator.generator import generated_color, generated_date
 from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
-    ProgressBarPageLocators, SliderPageLocators, TabsPageLocators
+    ProgressBarPageLocators, SliderPageLocators, TabsPageLocators, ToolTipsPageLocators
 from pages.base_page import BasePage
 
 
@@ -138,7 +138,7 @@ class ProgressBarPage(BasePage):  #  метод проверки прогрес�
 class TabsPage(BasePage):
     locators = TabsPageLocators()
 
-    def check_tabs(self, name_tab):
+    def check_tabs(self, name_tab):  #  метод проверки табов и текста в них
         tabs = {'what':
                     {'title': self.locators.TABS_WHAT,
                     'content': self.locators.TABS_WHAT_CONTENT},
@@ -155,5 +155,23 @@ class TabsPage(BasePage):
         button = self.element_is_visible(tabs[name_tab]['title'])
         button.click()
         what_content = self.element_is_visible(tabs[name_tab]['content']).text
-        return [button.text, len(what_content)]
+        return button.text, len(what_content)
 
+
+class ToolTipsPage(BasePage):
+    locators = ToolTipsPageLocators()
+
+    def get_text_from_tool_tips(self, hover_element, wait_elem):#  метод нахождения тултипа и текста его. Ховер - элемент на который наводится мыш, вейт- сам тултип появляющийся
+        element = self.element_is_present(hover_element)  #  определяем появление ховер элемента в дом-дереве
+        self.action_move_to_element(element)  #  указываем элемент на который надо навести курсор мыши
+        self.element_is_visible(wait_elem)  #  ожидаем появление элемента на странице
+        tool_tip_text = self.element_is_visible(self.locators.TOOL_TIPS_INNERS)  #  появление тултипа
+        text = tool_tip_text.text  #  получаем текст появившегося тултипа
+        return text
+
+    def check_tool_tips(self):
+        tool_tip_text_button = self.get_text_from_tool_tips(self.locators.BUTTON, self.locators.TOOL_TIP_BUTTON) #  наведение на элемент и ожидаем появление элемента
+        tool_tip_text_field = self.get_text_from_tool_tips(self.locators.FIELD, self.locators.TOOL_TIP_FIELD)
+        tool_tip_text_contrary = self.get_text_from_tool_tips(self.locators.CONTRARY_LINK, self.locators.TOOL_TIP_CONTRARY)
+        tool_tip_text_section = self.get_text_from_tool_tips(self.locators.SECTION_LINK, self.locators.TOOL_TIP_SECTION)
+        return tool_tip_text_button, tool_tip_text_field, tool_tip_text_contrary, tool_tip_text_section
