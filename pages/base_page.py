@@ -48,6 +48,11 @@ class BasePage:  #  создаем главный класс базовой ст
         action.drag_and_drop_by_offset(element, x_coords, y_coords)  #  зажмает точку на экране и двигает ее по координатам
         action.perform()  #  запускаем перемещение точки по координатам
 
+    def action_dgar_and_drop_to_element(self, what, where):  #  метод перемещения по странице из одной точки в другую
+        action = ActionChains(self.driver)
+        action.drag_and_drop(what, where)  #  параметры (откуда и куда)
+        action.perform()  #  запускаем перемещение
+
     def action_move_to_element(self, element):  #  метод наведения мыши на элемент
         action = ActionChains(self.driver)
         action.move_to_element(element)  #  перемещаем мышь к элементу
