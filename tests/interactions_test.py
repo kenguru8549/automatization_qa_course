@@ -1,4 +1,4 @@
-from pages.interactions_page import SortablePage, SelectablePage, ResizablePage
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DraggablePage
 
 
 class TestInteractions:
@@ -35,3 +35,23 @@ class TestInteractions:
             assert ('500px', '300px') == max_box
             assert ('150px', '150px') == min_box
             assert min_resize != max_resize
+
+
+    class TestDraggablePage:
+
+        def test_simple_druggable(self, driver):
+            draggable_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+            draggable_page.open()
+            before, after = draggable_page.simple_drag_box()
+            assert before != after
+
+        def test_axis_restricted_druggable(self, driver):
+            draggable_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+            draggable_page.open()
+            top_x, left_x = draggable_page.axis_restricted_x()
+            top_y, left_y = draggable_page.axis_restricted_y()
+            assert top_x[0][0] == top_x[1][0] and int(top_x[1][0]) == 0
+            assert left_x[0][0] != left_x[1][0] and int(left_x[1][0]) != 0
+            assert top_y[0][0] != top_y[1][0] and int(top_y[1][0]) != 0
+            assert left_y[0][0] == left_y[1][0] and int(left_y[1][0]) == 0
+

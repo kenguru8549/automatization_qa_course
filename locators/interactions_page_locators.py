@@ -23,3 +23,13 @@ class ResizablePageLocators:
     RESIZABLE_HANDLE = (
     By.CSS_SELECTOR, 'div[id="resizable"] span[class="react-resizable-handle react-resizable-handle-se"]')
     RESIZABLE = (By.CSS_SELECTOR, 'div[id="resizable"]')
+
+
+class DraggablePageLocators:
+    #  Simple
+    SIMPLE_TAB = (By.CSS_SELECTOR, 'button[id="draggableExample-tab-simple"]')
+    DRUG_ME = (By.CSS_SELECTOR, 'div[id="draggableExample-tabpane-simple"] div[id="dragBox"]')
+    # Axis Restricted
+    AXIS_TAB = (By.CSS_SELECTOR, 'button[id="draggableExample-tab-axisRestriction"]')
+    ONLY_X = (By.CSS_SELECTOR, 'div[id="restrictedX"]')
+    ONLY_Y = (By.CSS_SELECTOR, 'div[id="restrictedY"]')
